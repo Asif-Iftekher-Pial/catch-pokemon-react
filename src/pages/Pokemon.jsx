@@ -25,7 +25,8 @@ function Pokemon() {
 
     }
     const filteredPokemon = pokemon.filter((pokemon) => pokemon.name.toLowerCase().includes(search.toLowerCase()))
-
+    // if no result found 
+    const isNoResult = !loading && !error && search && filteredPokemon.length === 0;
 
     useEffect(() => {
         fetchPokemon()
@@ -41,16 +42,26 @@ function Pokemon() {
                     <input type="text" value={search} onChange={(e) => setSearch(e.target.value)} placeholder='Search for a Pokemon' />
                 </div>
                 <div>
-                    {loading && <h2>Loading...</h2>}
-                    {error && <h2>{error}</h2>}
+                    {loading && <h2 style={{ textAlign: "center", marginTop: "2rem" }}>Loading...</h2>}
+                    {error && <h2 style={{ textAlign: "center", marginTop: "2rem" }}>{error}</h2>}
+
                     {!loading && !error && (
                         <ul className='cards'>
-                            {filteredPokemon.map((pokemon) => {
-                                return (
-                                    <PokemonCard pokemon={pokemon} key={pokemon.id} />
-                                )
-                            })}
+                            {
+
+                                filteredPokemon.map((pokemon) => {
+                                    return (
+                                        <PokemonCard pokemon={pokemon} key={pokemon.id} />
+                                    )
+                                })
+
+                            }
                         </ul>
+                    )}
+                    {isNoResult && (
+                        <h2 style={{ textAlign: "center", marginTop: "2rem" }}>
+                            No Pokemon Found! 😔
+                        </h2>
                     )}
                 </div>
             </section >
